@@ -42,6 +42,7 @@ void updateSerial()
 
 void serialPorts(int n)
 {
+  if (currentTab == "serial")
   try {
     port = new Serial(this, Serial.list()[n], baudRate);
   }

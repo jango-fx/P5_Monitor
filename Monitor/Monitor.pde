@@ -9,15 +9,24 @@
 import processing.serial.*;
 import controlP5.*;
 
+int windowWidth, windowHeight;
+
 ControlP5 cp5;
-Textarea textarea;
+String currentTab;
+Textarea consoleArea;
 Println console;
 Toggle autoscroll;
 Bang clear;
 public boolean scroll=true;
-int tab;
 
-int windowWidth, windowHeight;
+// int cfg, int cbg, int cactive, int ccl, int cvl
+CColor serialColor = new CColor(color(0, 0, 255), color(255, 255, 0), color(255, 200, 0), color(255), color(255));
+color oscColor;
+color mqttColor;
+color wsColor;
+color midiColor;
+color artnetColor;
+
 void settings()
 {
   size(800, 600);
@@ -28,12 +37,12 @@ void setup()
   registerMethod("pre", this);
 
   cp5 = new ControlP5(this);
-  cp5.addTab("serial").activateEvent(true);
-  cp5.addTab("osc").activateEvent(true);
-  cp5.addTab("mqtt").activateEvent(true);
-  cp5.addTab("websockets").activateEvent(true);
-  cp5.addTab("midi").activateEvent(true);
-  cp5.addTab("artnet").activateEvent(true);
+  cp5.addTab("serial").activateEvent(true).setColorBackground(color(255, 222, 0, 150));
+  cp5.addTab("websockets").activateEvent(true).setColorBackground(color(240, 255, 0, 150));
+  cp5.addTab("mqtt").activateEvent(true).setColorBackground(color(180, 255, 0, 150));
+  cp5.addTab("osc").activateEvent(true).setColorBackground(color(0, 240, 255, 150));
+  cp5.addTab("artnet").activateEvent(true).setColorBackground(color(180, 0, 235, 150));
+  cp5.addTab("midi").activateEvent(true).setColorBackground(color(255, 0, 140, 150));
 
   autoscroll = cp5.addToggle("scroll")
     .setPosition(10, 70)
@@ -47,16 +56,21 @@ void setup()
     .moveTo("global");
   ;
 
-  textarea = cp5.addTextarea("txt")
+  consoleArea = cp5.addTextarea("txt")
     .setPosition(10, 100)
     .setLineHeight(12)
     .setColorBackground(color(30))
     .setColorForeground(color(255, 50))
     .moveTo("global");
   ;
-  console = cp5.addConsole(textarea);
+  console = cp5.addConsole(consoleArea);
 
   initSerial();
+  initOSC();
+  initMQTT();
+  initWS();
+  initARTNET();
+  initMIDI();
 }
 
 void pre() {
@@ -71,7 +85,7 @@ void updateUI()
 {
   updateSerial();
 
-  textarea
+  consoleArea
     .setSize(width-20, height-105)
     ;
 }
@@ -90,13 +104,22 @@ void clear()
 }
 
 void controlEvent(ControlEvent theEvent) {
-  println("!");
   if (theEvent.isTab()) {
-    String name = theEvent.getTab().getName();
-    if (name == "serial")
+    currentTab = theEvent.getTab().getName();
+    if (currentTab == "serial") {
       updateSerial();
+    } else {
+      if (port !=null) port.stop();
+    }
+    if (currentTab == "mqtt") {
+      connectMQTT();
+    } else {
+      disconnectMQTT();
+    }
+    if (currentTab == "osc")
+      connectOSC();
     else
-      port.stop();
+      disconnectOSC();
   }
 }
 
