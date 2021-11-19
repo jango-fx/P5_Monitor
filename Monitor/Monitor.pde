@@ -37,6 +37,15 @@ void setup()
   registerMethod("pre", this);
 
   cp5 = new ControlP5(this);
+  cp5.enableShortcuts();
+  cp5.addCallback(new CallbackListener() {
+    public void controlEvent(CallbackEvent event) {
+      if (event.getAction()==ControlP5.ACTION_ENTER) {
+        event.getController().bringToFront();
+      }
+    }
+  }
+  );
   cp5.addTab("serial").activateEvent(true).setColorBackground(color(255, 222, 0, 150));
   cp5.addTab("websockets").activateEvent(true).setColorBackground(color(240, 255, 0, 150));
   cp5.addTab("mqtt").activateEvent(true).setColorBackground(color(180, 255, 0, 150));
@@ -45,19 +54,19 @@ void setup()
   cp5.addTab("midi").activateEvent(true).setColorBackground(color(255, 0, 140, 150));
 
   autoscroll = cp5.addToggle("scroll")
-    .setPosition(10, 70)
+    .setPosition(220, 25)
     .setSize(20, 10)
     .moveTo("global");
   ;
 
   clear = cp5.addBang("clear")
-    .setPosition(50, 70)
+    .setPosition(250, 25)
     .setSize(20, 10)
     .moveTo("global");
   ;
 
   consoleArea = cp5.addTextarea("txt")
-    .setPosition(10, 100)
+    .setPosition(220, 55)
     .setLineHeight(12)
     .setColorBackground(color(30))
     .setColorForeground(color(255, 50))
@@ -71,6 +80,7 @@ void setup()
   initWS();
   initARTNET();
   initMIDI();
+  //initRecorder();
 }
 
 void pre() {
@@ -86,7 +96,7 @@ void updateUI()
   updateSerial();
 
   consoleArea
-    .setSize(width-20, height-105)
+    .setSize(width-220, height-55)
     ;
 }
 
@@ -96,6 +106,8 @@ void draw()
   //println(frameCount+": "+frameRate);
   if (scroll) console.play();
   else console.pause();
+
+  text(buffer, 10, 100, width, 300);
 }
 
 void clear()
@@ -104,22 +116,32 @@ void clear()
 }
 
 void controlEvent(ControlEvent theEvent) {
+  //println(theEvent);
   if (theEvent.isTab()) {
-    currentTab = theEvent.getTab().getName();
-    if (currentTab == "serial") {
-      updateSerial();
-    } else {
-      if (port !=null) port.stop();
+    String newTab = theEvent.getTab().getName();
+    theEvent.getTab().bringToFront();
+    if (newTab != currentTab) {
+
+      if (newTab == "serial")
+        updateSerial();
+      if (currentTab == "serial")
+        disconnectSerial();
+
+      if (newTab == "mqtt")
+        connectMQTT();
+      if (currentTab == "mqtt")
+        disconnectMQTT();
+
+      if (newTab == "osc")
+        connectOSC();
+      if (currentTab == "osc")
+        disconnectOSC();
+
+      //if (newTab == "midi")
+      //if (currentTab == "midi")
+      //  disconnectMIDI();
     }
-    if (currentTab == "mqtt") {
-      connectMQTT();
-    } else {
-      disconnectMQTT();
-    }
-    if (currentTab == "osc")
-      connectOSC();
-    else
-      disconnectOSC();
+    currentTab = newTab;
   }
 }
 
