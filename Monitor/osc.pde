@@ -7,7 +7,7 @@ NetAddress oscRemoteLocation;
 
 
 public int oscReceivePort;
-public String oscReceivePattern;
+public String oscReceivePattern;  // TODO: implement filter
 
 public int oscSendPort;
 public String oscSendIP;
@@ -78,6 +78,7 @@ void initOSC()
     ;
   oscSendBang = cp5.addBang("oscSend")
     .setPosition(10, 260)
+    .setSize(30, 15)
     .moveTo("osc")
     ;
 
@@ -122,7 +123,7 @@ void oscSend()
   OscMessage msg = new OscMessage(oscSendPattern);
   msg.add(oscSendMessage);
   oscP5.send(msg, oscRemoteLocation);
-  
+
   println(getTime()+" - [OSC]: "+" outgoing "+oscSendIP+":"+oscSendPort+"   "  +msg.addrPattern()+" = "+java.util.Arrays.toString(msg.arguments()));
 }
 

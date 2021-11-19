@@ -89,6 +89,8 @@ void initMQTT()
     ;
   mqttSendBang = cp5.addBang("publishMQTT")
     .setPosition(10, 260)
+    .setSize(30, 15)
+    .setLabel("publish")
     .moveTo("mqtt")
     ;
 
