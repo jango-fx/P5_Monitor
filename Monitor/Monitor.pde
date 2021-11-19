@@ -19,13 +19,14 @@ Toggle autoscroll;
 Bang clear;
 public boolean scroll=true;
 
+// TODO: define color styles
 // int cfg, int cbg, int cactive, int ccl, int cvl
-CColor serialColor = new CColor(color(0, 0, 255), color(255, 255, 0), color(255, 200, 0), color(255), color(255));
-color oscColor;
-color mqttColor;
-color wsColor;
-color midiColor;
-color artnetColor;
+//CColor serialColor = new CColor(color(0, 0, 255), color(255, 255, 0), color(255, 200, 0), color(255), color(255));
+//color oscColor;
+//color mqttColor;
+//color wsColor;
+//color midiColor;
+//color artnetColor;
 
 void settings()
 {
