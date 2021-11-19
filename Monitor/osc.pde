@@ -25,7 +25,8 @@ void initOSC()
 {
   oscRecivePortField = cp5.addTextfield("oscRecivePort")
     .setPosition(10, 25)
-    .setSize(50, 15)
+    .setSize(50, 15)  
+    .setAutoClear(false)
     .moveTo("osc")
     ;
 
