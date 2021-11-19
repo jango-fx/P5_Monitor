@@ -35,7 +35,7 @@ void updateSerial()
     .setBarHeight(15)
     //.setItemHeight(20)
     .setItems(java.util.Arrays.asList(Serial.list()))
-    .setValue(Serial.list().length-1)
+    //.setValue(Serial.list().length-1)
     .close()
     ;
 }
@@ -49,6 +49,15 @@ void serialPorts(int n)
   catch(Exception e)
   {
     println(e);
+  }
+}
+
+void disconnectSerial()
+{
+  println(getTime()+" - [Serial]: " + "disconnect");
+  if (port !=null) {
+    port.stop();
+    println(getTime()+" - [Serial]: " + "disconnected");
   }
 }
 
