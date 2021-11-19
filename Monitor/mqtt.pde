@@ -25,34 +25,37 @@ void initMQTT()
 {
   mqttServerField = cp5.addTextfield("mqttServer")
     .setPosition(10, 25)
-    .setSize(300, 15)
+    .setSize(200, 15)
+    .setValue(mqttServer)
     .moveTo("mqtt")
     ;
   mqttIDField = cp5.addTextfield("mqttID")
-    .setPosition(320, 25)
-    .setSize(50, 15)
+    .setPosition(10, 55)
+    .setSize(200, 15)
+    .setValue(mqttID)
     .moveTo("mqtt")
     ;
   mqttReceivePatternField = cp5.addTextfield("mqttRecivePattern")
-    .setPosition(395, 25)
-    .setSize(150, 15)
-    .moveTo("mqtt")
-    ;
-
-  mqttSendBang = cp5.addBang("sendMqttMsg")
-    .setPosition(575, 60)
-    //.setSize(50,15)
+    .setPosition(10, 100)
+    .setSize(200, 15)
+    .setValue(mqttReceivePattern)
     .moveTo("mqtt")
     ;
 
   mqttSendPatternField = cp5.addTextfield("mqttSendPattern")
-    .setPosition(575, 25)
-    .setSize(150, 15)
+    .setPosition(10, 150)
+    .setSize(200, 15)
+    .setValue(mqttSendPattern)
     .moveTo("mqtt")
     ;
   mqttSendMessageField = cp5.addTextfield("mqttMessage")
-    .setPosition(735, 25)
-    .setSize(50, 15)
+    .setPosition(10, 185)
+    .setSize(200, 15)
+    .setValue(mqttSendMessage)
+    .moveTo("mqtt")
+    ;
+  mqttSendBang = cp5.addBang("publishMQTT")
+    .setPosition(10, 220)
     .moveTo("mqtt")
     ;
 }
@@ -66,8 +69,12 @@ void connectMQTT()
 
 void disconnectMQTT()
 {
-  mqttClient.disconnect();
-  println(getTime()+" - [MQTT]: " + "disconnected");
+  println(getTime()+" - [MQTT]: " + "disconnect");
+
+  if (mqttClient != null) {
+    mqttClient.disconnect();
+    println(getTime()+" - [MQTT]: " + "disconnected");
+  }
 }
 
 void publishMQTT() {
@@ -81,7 +88,7 @@ void clientConnected() {
 }
 
 void messageReceived(String topic, byte[] payload) {
-  println(getTime()+" - [MQTT]: " + topic + " - " + new String(payload));
+  println(getTime()+" - [MQTT]: " + topic + "/" + new String(payload));
 }
 
 void connectionLost() {
