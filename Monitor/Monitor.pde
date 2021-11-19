@@ -96,7 +96,7 @@ void updateUI()
   updateSerial();
 
   consoleArea
-    .setSize(width-220, height-55)
+    .setSize(width-230, height-65)
     ;
 }
 
@@ -106,8 +106,6 @@ void draw()
   //println(frameCount+": "+frameRate);
   if (scroll) console.play();
   else console.pause();
-
-  text(buffer, 10, 100, width, 300);
 }
 
 void clear()
