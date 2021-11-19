@@ -25,7 +25,7 @@ void initOSC()
 {
   oscRecivePortField = cp5.addTextfield("oscRecivePort")
     .setPosition(10, 25)
-    .setSize(50,15)
+    .setSize(50, 15)
     .moveTo("osc")
     ;
 
@@ -34,12 +34,16 @@ void initOSC()
 
 void connectOSC()
 {
+  println(getTime()+" - [OSC]: " + "connect");
   oscP5 = new OscP5(this, oscRecivePort);
 }
 
 void disconnectOSC()
 {
-  oscP5.dispose();
+  println(getTime()+" - [OSC]: " + "disconnect");
+
+  if (oscP5 != null)
+    oscP5.dispose();
 }
 
 void updateOSC()
