@@ -1,8 +1,10 @@
-# Generic IO Communication Monitor
-for  debugging and logging 
-
 > :warning: **work in progress**
 
+# General Purpose Monitor
+
+for network and IO communication debugging and logging. 
+
+**supports:**
 * [x] serial
 * [ ] websocket
 * [x] mqtt
@@ -12,7 +14,9 @@ for  debugging and logging
 * ?
 
 **additional features:** 
-* [ ] recorder
+* [ ] logger / recorder
+* [ ] player
+
 
 made with [Processing](https://github.com/processing/processing) 
 
