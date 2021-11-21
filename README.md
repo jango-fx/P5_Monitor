@@ -1,6 +1,6 @@
 > :warning: **work in progress**
 
-# General Purpose Monitor
+# General Purpose Communication Monitor
 for network and IO communication debugging and logging. 
 
 **supports:**
